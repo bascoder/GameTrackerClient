@@ -1,9 +1,13 @@
 ﻿{
-  "GTAVexe": {
-    "game": {
-      "title": "Grand Theft Auto V",
-      "icon": "none",
-      "id":  1 
-    }
-  }
+  "GTAV": {
+      "Title": "Grand Theft Auto V",
+      "Icon": "none",
+      "Id": 1
+    
+  },
+  "BBBDemo3": {
+      "Title": "BBB Demo",
+      "Icon": "none",
+      "Id": 2
+  } 
 }

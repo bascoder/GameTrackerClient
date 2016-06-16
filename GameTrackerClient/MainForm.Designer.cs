@@ -28,12 +28,45 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.label1 = new System.Windows.Forms.Label();
+            this.labelCurrentGame = new System.Windows.Forms.Label();
+            this.SuspendLayout();
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(13, 13);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(122, 17);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Currently playing: ";
+            // 
+            // labelCurrentGame
+            // 
+            this.labelCurrentGame.AutoSize = true;
+            this.labelCurrentGame.Location = new System.Drawing.Point(142, 13);
+            this.labelCurrentGame.Name = "labelCurrentGame";
+            this.labelCurrentGame.Size = new System.Drawing.Size(0, 17);
+            this.labelCurrentGame.TabIndex = 1;
+            // 
+            // MainForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(282, 253);
+            this.Controls.Add(this.labelCurrentGame);
+            this.Controls.Add(this.label1);
+            this.Name = "MainForm";
+            this.Text = "GameTracker";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelCurrentGame;
     }
 }
 

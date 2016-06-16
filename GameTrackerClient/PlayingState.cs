@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using GameTrackerClient.model;
 
 namespace GameTrackerClient
@@ -38,8 +39,13 @@ namespace GameTrackerClient
 
         #endregion
 
+        private static readonly log4net.ILog Log =
+            log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         private Game _currentGame;
         private DateTime _startTime;
+
+        public event EventHandler UpdateEvent;
 
         public Game CurrentGame
         {
@@ -58,6 +64,8 @@ namespace GameTrackerClient
                     {
                         _currentGame = value;
                         _startTime = DateTime.Now;
+                        Log.Info("New game playing " + _currentGame);
+                        OnRaiseEvent();
                     }
                 }
             }
@@ -83,6 +91,11 @@ namespace GameTrackerClient
                     return DateTime.Now - _startTime;
                 }
             }
+        }
+
+        private void OnRaiseEvent()
+        {
+            UpdateEvent?.Invoke(this, EventArgs.Empty);
         }
     }
 }
