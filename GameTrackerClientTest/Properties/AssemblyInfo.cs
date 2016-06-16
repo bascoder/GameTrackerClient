@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("GameTrackerClient")]
+[assembly: AssemblyTitle("GameTrackerClientTest")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("GameTrackerClient")]
+[assembly: AssemblyProduct("GameTrackerClientTest")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("3b255539-c399-49f7-8c1c-6cd66f7aeb94")]
+[assembly: Guid("185a5e4e-1f43-403c-80b6-6bb7f1110b3b")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -34,6 +34,3 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-// Log4net
-[assembly: log4net.Config.XmlConfigurator(Watch = true)]
