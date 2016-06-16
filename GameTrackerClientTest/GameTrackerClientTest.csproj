@@ -52,6 +52,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="GameTest.cs" />
+    <Compile Include="PlayingStateTest.cs" />
     <Compile Include="ProcessLookupTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrackerServiceTest.cs" />

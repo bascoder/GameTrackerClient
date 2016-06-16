@@ -1,4 +1,9 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Threading;
+using GameTrackerClient.model;
+using Newtonsoft.Json;
 
 namespace GameTrackerClient
 {
@@ -11,13 +16,15 @@ namespace GameTrackerClient
         private volatile bool _stopped = true;
 
         private static readonly log4net.ILog Log =
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly int _timeout;
+        private IDictionary<string, Game> _mappingDictionary;
 
         public TrackerService(int timeout = 60000)
         {
             _timeout = timeout;
+            Init();
         }
 
         /// <summary>
@@ -56,6 +63,36 @@ namespace GameTrackerClient
             _looperThread = null;
         }
 
+        private void Init()
+        {
+            try
+            {
+                LoadMapping();
+            }
+            catch (IOException e)
+            {
+                Log.Error(e);
+                throw new GameTrackerException("Could not read mapping file", e);
+            }
+            catch (JsonException e)
+            {
+                Log.Error(e);
+                throw new GameTrackerException("Json mapping file has been corrupted", e);
+            }
+        }
+
+        private void LoadMapping()
+        {
+            string mappingPath = Properties.Resources.mapping_path;
+            using (StreamReader file = File.OpenText(mappingPath))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                _mappingDictionary =
+                    (Dictionary<string, Game>) serializer.Deserialize(file, typeof(Dictionary<string, Game>));
+                Log.Debug(string.Format("Mapping file read with {0} entries", _mappingDictionary.Count));
+            }
+        }
+
         private void Looper()
         {
             Log.Info("TrackerService thread has started");
@@ -79,7 +116,12 @@ namespace GameTrackerClient
             var processes = ProcessLookup.LookupProcesses();
             foreach (string process in processes)
             {
-                Log.Debug(process);
+                if (_mappingDictionary.ContainsKey(process))
+                {
+                    Game playedGame = _mappingDictionary[process];
+                    PlayingState.Instance.CurrentGame = playedGame;
+                    Log.Info("Player is playing " + playedGame.Title);
+                }
             }
             Thread.Sleep(_timeout);
         }
