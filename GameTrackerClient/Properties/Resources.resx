@@ -120,4 +120,13 @@
   <data name="mapping_path" xml:space="preserve">
     <value>resources/mapping.json</value>
   </data>
+  <data name="MainForm_UpdateLabel_none" xml:space="preserve">
+    <value>none</value>
+  </data>
+  <data name="MainForm_UpdateLabel_minutes" xml:space="preserve">
+    <value>minutes</value>
+  </data>
+  <data name="MainForm_UpdateLabel_hours" xml:space="preserve">
+    <value>hours</value>
+  </data>
 </root>

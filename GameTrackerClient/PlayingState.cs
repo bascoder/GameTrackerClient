@@ -77,7 +77,9 @@ namespace GameTrackerClient
             {
                 lock (_stateLock)
                 {
-                    return _startTime;
+                    if (_currentGame != null)
+                        return _startTime;
+                    return new DateTime();
                 }
             }
         }
@@ -88,7 +90,9 @@ namespace GameTrackerClient
             {
                 lock (_stateLock)
                 {
-                    return DateTime.Now - _startTime;
+                    if (_currentGame != null)
+                        return DateTime.Now - _startTime;
+                    return new TimeSpan(0);
                 }
             }
         }

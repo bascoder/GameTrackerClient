@@ -61,6 +61,33 @@ namespace GameTrackerClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to hours.
+        /// </summary>
+        internal static string MainForm_UpdateLabel_hours {
+            get {
+                return ResourceManager.GetString("MainForm_UpdateLabel_hours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to minutes.
+        /// </summary>
+        internal static string MainForm_UpdateLabel_minutes {
+            get {
+                return ResourceManager.GetString("MainForm_UpdateLabel_minutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to none.
+        /// </summary>
+        internal static string MainForm_UpdateLabel_none {
+            get {
+                return ResourceManager.GetString("MainForm_UpdateLabel_none", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to resources/mapping.json.
         /// </summary>
         internal static string mapping_path {
