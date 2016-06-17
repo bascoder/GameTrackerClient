@@ -21,6 +21,8 @@ namespace GameTrackerClient
         private readonly int _timeout;
         private IDictionary<string, Game> _mappingDictionary;
 
+        private PlayingState _playingState;
+
         public TrackerService(int timeout = 60000)
         {
             _timeout = timeout;
@@ -38,6 +40,7 @@ namespace GameTrackerClient
             }
             _stopped = false;
 
+            _playingState = PlayingState.Instance;
             _looperThread = new Thread(Looper);
             _looperThread.Start();
         }
@@ -88,7 +91,7 @@ namespace GameTrackerClient
             {
                 JsonSerializer serializer = new JsonSerializer();
                 _mappingDictionary =
-                    (Dictionary<string, Game>) serializer.Deserialize(file, typeof(Dictionary<string, Game>));
+                    (Dictionary<string, Game>) serializer.Deserialize(file, typeof (Dictionary<string, Game>));
                 Log.Debug(string.Format("Mapping file read with {0} entries", _mappingDictionary.Count));
             }
         }
@@ -114,16 +117,35 @@ namespace GameTrackerClient
         private void LooperBody()
         {
             var processes = ProcessLookup.LookupProcesses();
+            bool found = false;
             foreach (string process in processes)
             {
                 if (_mappingDictionary.ContainsKey(process))
                 {
                     Game playedGame = _mappingDictionary[process];
-                    PlayingState.Instance.CurrentGame = playedGame;
+                    PlayingState.State previousState = _playingState.UpdateGame(playedGame);
                     Log.Info("Player is playing " + playedGame.Title);
+
+                    if (!playedGame.Equals(previousState.Game) && previousState.Game != null)
+                    {
+                        PostGameHours(previousState);
+                    }
+
+                    found = true;
                 }
             }
+
+            if (!found && _playingState.CurrentState.Game != null)
+            {
+                // remove game if exists
+                _playingState.RemoveGame();
+            }
             Thread.Sleep(_timeout);
+        }
+
+        private void PostGameHours(PlayingState.State state)
+        {
+            // TODO post hours to api for persistense
         }
     }
 }

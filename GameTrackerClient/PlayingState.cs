@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Resources;
 using GameTrackerClient.model;
 
 namespace GameTrackerClient
@@ -42,64 +43,84 @@ namespace GameTrackerClient
         private static readonly log4net.ILog Log =
             log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private Game _currentGame;
-        private DateTime _startTime;
-
         public event EventHandler UpdateEvent;
 
-        public Game CurrentGame
+        private State _currentState;
+
+        public State CurrentState
         {
             get
             {
                 lock (_stateLock)
                 {
-                    return _currentGame;
-                }
-            }
-            set
-            {
-                lock (_stateLock)
-                {
-                    if (!value.Equals(_currentGame))
-                    {
-                        _currentGame = value;
-                        _startTime = DateTime.Now;
-                        Log.Info("New game playing " + _currentGame);
-                        OnRaiseEvent();
-                    }
+                    return _currentState;
                 }
             }
         }
 
-        public DateTime StartTime
+        public State UpdateGame(Game newGame)
         {
-            get
+            lock (_stateLock)
             {
-                lock (_stateLock)
+                State previousState = _currentState;
+                State newState = new State();
+
+                if (!newGame.Equals(previousState.Game))
                 {
-                    if (_currentGame != null)
-                        return _startTime;
-                    return new DateTime();
+                    newState.Game = newGame;
+                    Log.Info("New game playing " + newGame);
+
+                    _currentState = newState;
+                    OnRaiseEvent();
                 }
+
+                return previousState;
             }
         }
 
-        public TimeSpan CurrentPlayTime
+        public State RemoveGame()
         {
-            get
+            lock (_stateLock)
             {
-                lock (_stateLock)
-                {
-                    if (_currentGame != null)
-                        return DateTime.Now - _startTime;
-                    return new TimeSpan(0);
-                }
+                State previousState = _currentState;
+                _currentState = new State();
+                return previousState;
             }
         }
 
         private void OnRaiseEvent()
         {
             UpdateEvent?.Invoke(this, EventArgs.Empty);
+        }
+
+        public struct State
+        {
+            private Game _game;
+
+            public Game Game
+            {
+                get { return _game; }
+                set
+                {
+                    if (value != null && !value.Equals(_game))
+                    {
+                        _game = value;
+                        StartTime = DateTime.Now;
+                    }
+                }
+            }
+
+            public TimeSpan PlayingTime
+            {
+                get
+                {
+                    if (_game != null)
+                        return DateTime.Now - StartTime;
+                    return new TimeSpan(0);
+                }
+            }
+
+            public DateTime StartTime { get; private set; }
         }
     }
 }

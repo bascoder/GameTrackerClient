@@ -6,8 +6,13 @@
     
   },
   "BBBDemo3": {
-      "Title": "BBB Demo",
-      "Icon": "none",
-      "Id": 2
+    "Title": "BBB Demo",
+    "Icon": "none",
+    "Id": 2
+  },
+  "AoK HD": {
+    "Title": "Age of Empires II HD",
+    "Icon": "none",
+    "Id":  3
   } 
 }

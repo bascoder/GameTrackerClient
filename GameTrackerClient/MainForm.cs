@@ -9,7 +9,7 @@ namespace GameTrackerClient
     {
         private const int UpdateInterval = 1000;
 
-        private readonly TrackerService _trackerService = new TrackerService(UpdateInterval * 30);
+        private readonly TrackerService _trackerService = new TrackerService(UpdateInterval);
         private readonly PlayingState _playingState = PlayingState.Instance;
 
         private delegate void UpdateDelegate();
@@ -51,14 +51,14 @@ namespace GameTrackerClient
 
         private void UpdateLabel()
         {
-            Game game = _playingState.CurrentGame;
+            Game game = _playingState.CurrentState.Game;
             if (game == null)
             {
                 labelCurrentGame.Text = Resources.MainForm_UpdateLabel_none;
                 return;
             }
 
-            TimeSpan playTime = _playingState.CurrentPlayTime;
+            TimeSpan playTime = _playingState.CurrentState.PlayingTime;
             if (playTime.TotalMinutes >= 1.0)
             {
                 string timeString = playTime.TotalHours > 1.0
